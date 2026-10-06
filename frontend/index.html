@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Spammer Detection</title>
+
+<style>
+/* ================= GLOBAL ================= */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  color: #ffffff;
+}
+
+/* ================= MAIN WRAPPER ================= */
+.main-wrapper {
+  width: 100%;
+  max-width: 1300px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+/* ================= GLASS CARD ================= */
+.glass-card {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* ================= HEADINGS ================= */
+h1, h2 {
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
+}
+
+/* ================= FORM GRID ================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+/* ================= INPUTS ================= */
+input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+/* ================= BUTTON ================= */
+button {
+  grid-column: span 4;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
+/* ================= RESULT ================= */
+.result {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ================= STATUS COLORS ================= */
+.spam {
+  color: #ff4d4d;
+  font-weight: 700;
+}
+
+.normal {
+  color: #4dff88;
+  font-weight: 700;
+}
+
+/* ================= COMMUNITY SECTION ================= */
+.community-section {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(14px);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* ================= TABLE ================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background: #111827;
+  padding: 14px;
+  font-size: 16px;
+}
+
+td {
+  padding: 12px;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+}
+
+tbody tr:hover {
+  background: rgba(255,255,255,0.18);
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-wrapper">
+
+  <!-- ================= USER INPUT ================= -->
+  <div class="glass-card">
+    <h1>Spammer Detection</h1>
+
+    <div class="form-grid">
+      <input id="user_id" placeholder="User ID">
+      <input id="review_count" type="number" placeholder="Review Count">
+      <input id="avg_rating" type="number" step="0.1" placeholder="Average Rating">
+      <input id="rating_std" type="number" step="0.1" placeholder="Rating Std">
+      <input id="avg_time_gap" type="number" placeholder="Avg Time Gap">
+      <input id="helpfulness_ratio" type="number" step="0.01" placeholder="Helpfulness Ratio">
+      <input id="avg_review_length" type="number" placeholder="Avg Review Length">
+      <input id="avg_unique_ratio" type="number" step="0.01" placeholder="Avg Unique Ratio">
+      <input id="duplicate_review_ratio" type="number" step="0.01" placeholder="Duplicate Review Ratio">
+      <input id="repeated_reviews" type="number" placeholder="Repeated Reviews">
+
+      <button onclick="predict()">Predict</button>
+    </div>
+
+    <div id="output" class="result"></div>
+  </div>
+
+  <!-- ================= COMMUNITY RESULTS ================= -->
+  <div class="community-section">
+    <h2>Community Spam Analysis</h2>
+
+    <table id="communityTable">
+      <thead>
+        <tr>
+          <th>Community ID</th>
+          <th>Spam Ratio</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ================= JS (UNCHANGED LOGIC) ================= -->
+<script>
+function generateReason(data) {
+  let reasons = [];
+
+  if (data.avg_time_gap < 3) {
+    reasons.push("Reviews posted very frequently");
+  }
+  if (data.duplicate_review_ratio > 0.6) {
+    reasons.push("High number of duplicate reviews");
+  }
+  if (data.avg_unique_ratio < 0.3) {
+    reasons.push("Low content uniqueness");
+  }
+  if (data.repeated_reviews > 30) {
+    reasons.push("Same reviews repeated multiple times");
+  }
+  if (data.helpfulness_ratio < 0.1) {
+    reasons.push("Very low helpfulness score");
+  }
+
+  if (reasons.length === 0) {
+    return "User behavior appears natural with no strong spam indicators";
+  }
+
+  return reasons.join(", ");
+}
+</script>
+
+<script>
+function predict() {
+  const data = {
+    user_id: user_id.value,
+    review_count: Number(review_count.value),
+    avg_rating: Number(avg_rating.value),
+    rating_std: Number(rating_std.value),
+    avg_time_gap: Number(avg_time_gap.value),
+    helpfulness_ratio: Number(helpfulness_ratio.value),
+    avg_review_length: Number(avg_review_length.value),
+    avg_unique_ratio: Number(avg_unique_ratio.value),
+    duplicate_review_ratio: Number(duplicate_review_ratio.value),
+    repeated_reviews: Number(repeated_reviews.value)
+  };
+
+  fetch("http://127.0.0.1:8000/predict", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(res => {
+   const explanation = generateReason(data);
+
+document.getElementById("output").innerHTML = `
+  <div class="${res.final_result === 'SPAMMER' ? 'spam' : 'normal'}">
+    ${res.final_result}
+  </div>
+  <div><b>Reason:</b> ${explanation}</div>
+  <div><b>Spam Probability:</b> ${res.spam_probability}</div>
+`;
+
+  });
+}
+
+async function loadCommunities() {
+  const res = await fetch("http://127.0.0.1:8000/spammer-groups");
+  const data = await res.json();
+
+  const tbody = document.querySelector("#communityTable tbody");
+  tbody.innerHTML = "";
+
+  data.groups.forEach(g => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${g.community_id}</td>
+        <td>${g.spam_ratio}</td>
+        <td class="${g.status.includes('SPAM') ? 'spam' : 'normal'}">
+          ${g.status}
+        </td>
+      </tr>`;
+  });
+}
+
+loadCommunities();
+</script>
+
+</body>
+</html>

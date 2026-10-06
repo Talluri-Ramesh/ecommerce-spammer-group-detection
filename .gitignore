@@ -1,0 +1,33 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Original / cleaned datasets
+data/*.csv
+
+# Generated result files
+results/*.csv
+results/*.gml
+results/*.gephi
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+*.tmp
+*.temp
+
+# OS
+.DS_Store
+Thumbs.db

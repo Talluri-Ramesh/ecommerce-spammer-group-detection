@@ -1,0 +1,26 @@
+[
+  {
+    "user_id": "U1",
+    "product_id": "P1",
+    "rating": 1,
+    "timestamp": "2025-01-01"
+  },
+  {
+    "user_id": "U2",
+    "product_id": "P1",
+    "rating": 1,
+    "timestamp": "2025-01-01"
+  },
+  {
+    "user_id": "U3",
+    "product_id": "P2",
+    "rating": 5,
+    "timestamp": "2025-01-02"
+  },
+  {
+    "user_id": "U4",
+    "product_id": "P1",
+    "rating": 1,
+    "timestamp": "2025-01-01"
+  }
+]

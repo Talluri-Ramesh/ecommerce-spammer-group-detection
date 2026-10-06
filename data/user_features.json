@@ -1,0 +1,24 @@
+{
+  "user_1": {
+    "review_count": 120,
+    "avg_rating": 1.8,
+    "rating_std": 0.2,
+    "avg_time_gap": 5,
+    "helpfulness_ratio": 0.05,
+    "avg_review_length": 20,
+    "avg_unique_ratio": 0.3,
+    "duplicate_review_ratio": 0.7,
+    "repeated_reviews": 15
+  },
+  "user_2": {
+    "review_count": 15,
+    "avg_rating": 4.2,
+    "rating_std": 0.8,
+    "avg_time_gap": 90,
+    "helpfulness_ratio": 0.6,
+    "avg_review_length": 120,
+    "avg_unique_ratio": 0.85,
+    "duplicate_review_ratio": 0.05,
+    "repeated_reviews": 0
+  }
+}

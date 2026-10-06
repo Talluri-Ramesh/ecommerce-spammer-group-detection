@@ -1,0 +1,10 @@
+{
+    "user_1": {
+        "ml_prediction": 1,
+        "spam_probability": 1.0
+    },
+    "user_2": {
+        "ml_prediction": 1,
+        "spam_probability": 1.0
+    }
+}

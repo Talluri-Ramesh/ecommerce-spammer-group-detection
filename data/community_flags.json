@@ -1,0 +1,10 @@
+{
+  "community_0": {
+    "spam_ratio": 0.12,
+    "is_spam": false
+  },
+  "community_1": {
+    "spam_ratio": 0.78,
+    "is_spam": true
+  }
+}
